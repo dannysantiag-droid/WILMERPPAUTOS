@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PP AUTOS - Catálogo Vehicular</title>
+
+    <style>
+        /* Variables para el esquema de color neón azul */
+        :root {
+            --color-dark-bg: #111;
+            --color-neon-blue: #D7DEDF; 
+            --color-light-text: #fff;
+            --color-sub-text: #aaa;
+            /* Sombra de neón AZUL */
+            --shadow-neon: 0 0 5px var(--color-neon-blue), 0 0 10px var(--color-neon-blue), 0 0 20px rgba(0, 191, 255, 0.4);
+            --color-value-neon: #D0D1C8; /* Neón gris/griss para el valor */
+            --shadow-value: 0 0 8px var(--color-value-neon);
+            
+            /* 💡 Variables Neumorfismo Oscuro Adaptado */
+            --neu-dark-shadow: #0a0a0a; /* Sombra oscura para profundidad (Darker than #111) */
+            --neu-light-shadow:#313236; /* Sombra clara para brillo (Lighter than #111) */
+            --neu-base-color: rgba(17, 17, 17, 0.95); /* Color base (Igual al header) */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            /* Fuente optimizada para sistemas operativos modernos */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
+        }
+
+        body {
+            background-color: var(--color-dark-bg); /* Fondo de respaldo negro oscuro */
+            color: var(--color-light-text);
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+        }
+        
+        /* CÓDIGO PARA VIDEO DE FONDO */
+        #background-video {
+            position: fixed; 
+            top: 50%; /* CENTRADO VERTICAL */
+            left: 50%; /* CENTRADO HORIZONTAL */
+            /* El siguiente transform asegura el centrado perfecto */
+            transform: translate(-50%, -50%); 
+            
+            /* CRÍTICO: Aseguramos que cubra todo y mantenga la proporción */
+            min-width: 80%; 
+            min-height: 100%; 
+            width: auto; /* Ancho automático para no distorsionar */
+            height: auto; /* Alto automático para no distorsionar */
+            
+            object-fit: cover; 
+            z-index: -100; 
+            opacity: 1; 
+            display: none; 
+        }
+        
+        /* Clase para mostrar el video de fondo SÓLO en el menú */
+        .menu-active-video #background-video {
+            display: block; 
+        }
+
+        .app-container {
+            flex-grow: 1; 
+            background-color: transparent; 
+            padding-bottom: 50px; /* Espacio para el footer fijo */
+        }
+              
+        /* Botón de Regreso FIJO */
+        .fixed-back-button {
+            position: fixed;
+            top: 15px; /* Posición desde arriba */
+            left: 15px; /* Posición desde la izquierda */
+            z-index: 2000; /* Asegura que esté por encima de todo */
+            
+            background-color: var(--neu-base-color);
+            border: none;
+            color: var(--color-neon-blue);
+            padding: 10px 20px; 
+            cursor: pointer;
+            border-radius: 999px; 
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.4s ease-in-out;
+            
+            /* Aplicación de Neumorfismo Oscuro Inset */
+            box-shadow: inset 4px 4px 8px var(--neu-dark-shadow), 
+                        inset -4px -4px 8px var(--neu-light-shadow); 
+            
+            /* Sombra de texto neón */
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.5);
+        }
+        
+        .fixed-back-button:hover {
+            /* Efecto de 'despresurización' (outset) y resplandor neón */
+            background-color: var(--neu-base-color);
+            box-shadow: 4px 4px 8px var(--neu-dark-shadow),
+                        -4px -4px 8px var(--neu-light-shadow),
+                        var(--shadow-neon); /* Agrega el resplandor neón exterior */
+            color: var(--color-light-text);
+        }
+
+        /* --- PÁGINA 1: MENÚ --- */
+        #page-menu {
+            padding: 20px 20px 20px; 
+            min-height: auto; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center; 
+        }
+        
+        /* Contenedor para el título del menú */
+        .menu-title-wrapper {
+            width: 100%;
+            max-width: 350px; 
+            text-align: center;
+            margin: 0 20px 20px 0; 
+        }
+        
+        /* CÓDIGO ACTUALIZADO PARA EL FADE-IN del TÍTULO (8s Suave) */
+        .menu-title-wrapper.fade-in-initial-hidden {
+            opacity: 0;
+            transition: opacity 8s ease-in; 
+        }
+        .menu-title-wrapper.fade-in-visible {
+            opacity: 1;
+        }
+        /* FIN CÓDIGO TÍTULO */
+
+
+        /* Título h1 */
+        .menu-title-wrapper h1 {
+            font-size: 2em;
+            color: var(--color-neon-blue);
+            text-shadow: var(--shadow-neon); 
+            white-space: nowrap;
+        }
+
+        /* CÓDIGO MODIFICADO PARA EL FADE-IN STAGGER (Entrada desde el Fondo con Escala) */
+        
+        /* Definimos la animación para el efecto de "Aparecer y Escalar" */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.5); /* Empieza a la mitad del tamaño (Saliendo del fondo) */
+            }
+            to {
+                opacity: 1;
+                transform: scale(1); /* Termina en su posición normal */
+            }
+        }
+
+        /* Clase inicial para ocultar y preparar los botones */
+        .category-menu-container.buttons-stagger-hidden .feature-button {
+            opacity: 0;
+            transform: scale(0.5); /* La posición inicial coincide con el keyframe 'from' */
+            /* Asegura que no haya transición antes de la activación */
+            transition: none; 
+        }
+
+        /* Clase para activar la animación escalonada */
+        .category-menu-container.buttons-stagger-active .feature-button {
+            /* Aplicamos la nueva animación fadeInScale */
+            animation: fadeInScale 0.5s ease-out forwards;
+            /* La opacidad inicial debe ser 0 para que la animación funcione */
+            opacity: 0; 
+        }
+
+        /* Reglas para el retraso escalonado (Stagger): 0.1s de diferencia por botón */
+        .buttons-stagger-active .feature-button:nth-child(1) { animation-delay: 0.1s; }
+        .buttons-stagger-active .feature-button:nth-child(2) { animation-delay: 0.2s; }
+        .buttons-stagger-active .feature-button:nth-child(3) { animation-delay: 0.3s; }
+        .buttons-stagger-active .feature-button:nth-child(4) { animation-delay: 0.4s; }
+        .buttons-stagger-active .feature-button:nth-child(5) { animation-delay: 0.5s; }
+        .buttons-stagger-active .feature-button:nth-child(6) { animation-delay: 0.6s; }
+        .buttons-stagger-active .feature-button:nth-child(7) { animation-delay: 0.7s; }
+        .buttons-stagger-active .feature-button:nth-child(8) { animation-delay: 0.8s; }
+        .buttons-stagger-active .feature-button:nth-child(9) { animation-delay: 0.9s; }
+        
+        /* FIN CÓDIGO MODIFICADO */
+
+
+        /* CONTENEDOR DE BOTONES */
+        .category-menu-container {
+            width: 100%;
+            max-width: 300px; 
+            padding: 0 0 60px 0; 
+            border-radius: 20px; 
+            text-align: left;
+            margin: 0 0 60px -40px; 
+            background-color: transparent; 
+            border: none; 
+            box-shadow: none; 
+        }
+
+        /* 💡 Contenedor de los botones a 3 columnas con CSS Grid */
+        .features-menu {
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* BOTONES */
+        .feature-button {
+            background: transparent; 
+            border: 1px solid var(--color-light-text); 
+            color: var(--color-light-text); 
+            padding: 5px 5px; 
+            text-align: center; 
+            cursor: pointer;
+            transition: all 0.5s;
+            border-radius: 999px; 
+            font-size: 1em; 
+            font-weight: bold;
+        }
+        
+        .feature-button:hover {
+            /* Efecto Neón al pasar el cursor */
+            background-color: rgba(0, 191, 255, 0.1); 
+            border-color: var(--color-neon-blue); 
+            box-shadow: var(--shadow-neon); 
+            color: var(--color-neon-blue); 
+        }
+
+        /* --- PÁGINA 2: CATÁLOGO DE TARJETAS --- */
+        #page-catalog {
+            display: none; 
+            padding: 20px 15px; 
+            min-height: calc(100vh - 50px);
+        }
+
+        .category-title {
+            color: var(--color-neon-blue);
+            text-shadow: var(--shadow-neon);
+            margin: 20px 0;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        /* LAYOUT DE COLUMNAS (Responsive) */
+        #catalogo-vehiculos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px;
+            padding: 10px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* ESTILOS DE TARJETA */
+        .car-card {
+            background-color: rgba(26, 26, 26, 0.95); 
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-height: auto; 
+            position: relative; 
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-neon-blue);
+            box-shadow: var(--shadow-neon);
+        }
+
+        /* ESTILOS PARA LA IMAGEN */
+        .card-image-container {
+            width: 100%;
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            margin-bottom: 15px; 
+            border-radius: 12px;
+            overflow: hidden; 
+        }
+
+        .card-image {
+            width: 100%;
+            height: auto;
+	    max-height: 250px;
+            display: block; 
+            object-fit: cover; 
+            border-radius: 12px;
+            box-shadow: 0 0 5px var(--color-neon-blue);
+        }
+
+        /* RESTO DE ESTILOS DE DETALLE */
+        .card-detail p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: var(--color-sub-text);
+text-align: center;
+        }
+
+        .card-detail strong {
+            color: var(--color-light-text);
+            font-weight: normal;
+        }
+
+        /* 💡 ESTILO BASE: Contenedor para el SVG y el texto del detalle */
+        .motor-detail-container, 
+        .year-detail-container, 
+        .transmission-detail-container,
+        .mileage-detail-container {
+            display: grid;
+grid-template-columns: 30px 1fr;
+            align-items: center;
+            gap: 15px; /* Espacio entre el SVG y el texto */
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: var(--color-sub-text);
+        }
+        
+        /* Estilos específicos para el texto del detalle */
+       .detail-text-line {
+    display: flex;
+    align-items: center;
+    /* CORRECCIÓN CRÍTICA: Forzamos la alineación del texto a la izquierda. */
+    text-align: left; 
+    /* CRÍTICO: Aseguramos que el contenido dentro del flex comience desde el inicio */
+    justify-content: flex-start;
+        }
+        
+        /* 🚀 ESTILOS DEL MOTOR SVG ANIMADO */
+        
+        /* 1. ANIMACIÓN DE ROTACIÓN (Eje) - Se mantiene */
+        @keyframes giro-eje {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 2. ANIMACIONES DE MOVIMIENTO SUPERIOR (Variadas) */
+        @keyframes colector-mov1 {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-0.8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes colector-mov2 {
+            0% { transform: translateY(0px); }
+            40% { transform: translateY(-0.4px); }
+            80% { transform: translateY(-0.8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes colector-mov3 {
+            0% { transform: translateY(0px); }
+            70% { transform: translateY(-0.6px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes colector-mov4 {
+            0% { transform: translateY(0px); }
+            60% { transform: translateY(-0.7px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Aplicación de animaciones */
+        .eje-giratorio {
+            transform-origin: 22px 10px;
+            animation: giro-eje 1s infinite linear;
+        }
+
+        /* Aplicación individual a cada línea */
+        .movimiento-1 { animation: colector-mov1 0.25s infinite alternate ease-in-out; }
+        .movimiento-2 { animation: colector-mov2 0.3s infinite alternate ease-in-out; }
+        .movimiento-3 { animation: colector-mov3 0.2s infinite alternate ease-in-out; }
+        .movimiento-4 { animation: colector-mov4 0.35s infinite alternate ease-in-out; }
+        
+        /* Ajuste del tamaño del SVG para la tarjeta */
+        .motor-icon {
+            width: 25px; 
+            height: 15px; 
+            margin-right: 5px; /* Espacio antes del texto del detalle */
+            stroke: var(--color-light-text); /* Color base: Blanco */
+            transition: stroke 0.3s ease;
+        }
+        .car-card:hover .motor-icon {
+            stroke: var(--color-neon-blue);
+        }
+        
+        /* FIN DE ESTILOS DEL MOTOR SVG ANIMADO */
+        
+        /* 📅 ESTILOS NUEVOS: ICONO DE AÑO SVG */
+        
+        /* Clase reutilizada para el nuevo SVG de Año */
+        .year-icon { 
+            width: 20px; 
+            height: 20px;
+            flex-shrink: 0;
+            stroke: var(--color-light-text); 
+            stroke-width: 2; 
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.3s ease, transform 0.3s;
+            animation: none; 
+        }
+        
+        .car-card:hover .year-icon {
+            stroke: var(--color-neon-blue); /* Efecto Neón al pasar el mouse */
+            transform: scale(1.1); 
+        }
+
+        /* NUEVO: Estilos y Animación para los 6 Cuadros */
+        .animated-square {
+            /* CRÍTICO: Usamos 'currentColor' para que tome el color de 'stroke' (blanco/neón) */
+            fill: currentColor; 
+            stroke: none; /* Sin borde de línea */
+            opacity: 0.8;
+            /* Aplicar la animación de movimiento con duración y alternancia */
+            animation: square-move 1.5s infinite alternate ease-in-out; 
+        }
+
+        /* Definir el retraso escalonado para el movimiento de los 6 cuadros */
+        #moving-squares .animated-square:nth-child(1) { animation-delay: 0s; }
+        #moving-squares .animated-square:nth-child(2) { animation-delay: 0.2s; }
+        #moving-squares .animated-square:nth-child(3) { animation-delay: 0.4s; }
+        #moving-squares .animated-square:nth-child(4) { animation-delay: 0.1s; } 
+        #moving-squares .animated-square:nth-child(5) { animation-delay: 0.3s; }
+        #moving-squares .animated-square:nth-child(6) { animation-delay: 0.5s; }
+
+        /* Nueva Animación: Movimiento vertical sutil para los cuadros */
+        @keyframes square-move {
+            0% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(-3px); opacity: 0.8; } /* Mueve 3px hacia arriba */
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        /* FIN DE ESTILOS DEL ICONO DE AÑO SVG */
+        
+        /* ⚙️ ESTILOS: ICONO DE TRANSMISIÓN */
+
+        /* Definir la animación de rotación para los engranajes */
+        @keyframes gear-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .transmission-icon {
+            width: 20px; 
+            height: 20px; 
+            flex-shrink: 0;
+            stroke: var(--color-light-text); /* Asegura que el color base sea blanco */
+            stroke-width: 1.5;
+            fill: none;
+            transition: stroke 0.3s ease;
+        }
+
+        /* Aplicación de la animación a los grupos de engranajes */
+        .gear-large {
+            transform-origin: 16.5px 16.5px; /* Origen: Centro del engranaje inferior derecho (16.5, 16.5) */
+            animation: gear-spin 3s linear infinite;
+        }
+
+        .gear-small {
+            transform-origin: 9.5px 9px; /* Origen: Centro del engranaje superior (9.5, 9) */
+            /* Rotación más rápida en sentido contrario para contraste */
+            animation: gear-spin 2s linear infinite reverse; 
+        }
+
+        /* Efecto al pasar el mouse */
+        .car-card:hover .transmission-icon path,
+        .car-card:hover .transmission-icon circle {
+            stroke: var(--color-neon-blue); 
+        }
+        /* FIN ESTILOS TRANSMISIÓN */
+
+        
+        /* 🚀 VELOCÍMETRO SVG ANIMADO (KILOMETRAJE) */
+        .mileage-detail-container { /* Nuevo nombre para el contenedor de kilometraje */
+            display: flex;
+            align-items: center;
+            gap: 25px; 
+            margin: 5px 0; 
+            font-size: 0.9em;
+            color: var(--color-sub-text);
+        }
+
+        .speedometer-icon { /* Reutilizamos la clase para el elemento SVG */
+            width: 20px; 
+            height: 20px; 
+            flex-shrink: 0;
+            /* Estilos de línea blanca sin fondo */
+            stroke: var(--color-light-text); /* Base color: White */
+            stroke-width: 1.5;
+            fill: none; /* Sin fondo */
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.3s ease;
+        }
+
+        /* Definimos la animación de la aguja (efecto de barrido) */
+        @keyframes speedo-sweep-v2 {
+            0% { transform: rotate(-80deg); } /* Inicio (Izquierda) */
+            50% { transform: rotate(45deg); }  /* Fin (Derecha) */
+            100% { transform: rotate(-80deg); }
+        }
+
+        /* Aplicación de la animación a la aguja */
+        .speedo-aguja {
+            /* El origen de la rotación es el centro (12, 16) del SVG */
+            transform-origin: 12px 16px;
+            animation: speedo-sweep-v2 2s infinite alternate ease-in-out;
+        }
+
+        /* Efecto al pasar el mouse por la tarjeta entera */
+        .car-card:hover .speedometer-icon path,
+        .car-card:hover .speedometer-icon line,
+        .car-card:hover .speedometer-icon circle {
+            stroke: var(--color-neon-blue); /* Cambia a neón azul al pasar el ratón */
+        }
+        /* FIN DE ESTILOS DEL VELOCÍMETRO SVG ANIMADO */
+        
+        .card-value {
+            margin-top: 15px;
+            padding: 10px;
+            text-align: center; 
+            font-size: 1.6em;
+            font-weight: bold;
+            color: var(--color-value-neon); 
+            text-shadow: var(--shadow-value);
+            border-top: 1px solid #333;
+            margin-bottom: 15px; 
+        }
+        
+        /* ESTILOS DEL BOTÓN DE WHATSAPP */
+        .modern-btn-whatsapp { 
+            width: 100%;
+            height: 3em;
+            border-radius: 30em;
+            font-size: 15px;
+            font-family: inherit;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            cursor: pointer;
+            text-decoration: none; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            color: #E5E5E5; 
+            font-weight: bold;
+            
+            background: var(--neu-base-color);
+            box-shadow: 4px 4px 8px var(--neu-dark-shadow),
+                        -4px -4px 8px var(--neu-light-shadow);
+            transition: all 0.2s ease;
+        }
+
+        .modern-btn-whatsapp::before {
+            content: '';
+            width: 0;
+            height: 100%;
+            border-radius: 30em;
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* Fondo gradiente de WhatsApp */
+            background-image: linear-gradient(to right, #075E54, #25D366); 
+            transition: width 0.5s ease;
+            z-index: -1;
+        }
+
+        .modern-btn-whatsapp:hover::before {
+            width: 100%;
+        }
+
+        .modern-btn-whatsapp:hover {
+            color: #fff;
+            transform: scale(1.03);
+        }
+        
+        .whatsapp-icon {
+            font-size: 1.2em;
+            margin-right: 8px;
+            filter: drop-shadow(0 0 2px #25D366); 
+        }
+
+        /* --- PÁGINA 3: DETALLES DEL VEHÍCULO --- */
+        #page-details {
+            display: none; 
+            padding: 20px 15px; 
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .detail-header {
+            text-align: center;
+            margin: 20px 0 30px; 
+        }
+
+        .detail-header h2 {
+            font-size: 2.5em;
+            color: var(--color-neon-blue);
+            text-shadow: var(--shadow-neon);
+            margin-bottom: 10px;
+        }
+
+        .detail-header .detail-value {
+            font-size: 2em;
+            color: var(--color-value-neon);
+            text-shadow: var(--shadow-value);
+            margin-top: 10px;
+            padding: 10px 0;
+            border-top: 1px solid #333;
+            display: block;
+        }
+        
+       /* Layout de la Galería mejorado */
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Estilo para imágenes de galería uniformes */
+.gallery-image {
+    width: 100%;
+    height: 250px; /* Altura fija para todas las fotos */
+    display: block; 
+    object-fit: cover; /* Mantiene la proporción recortando lo sobrante */
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 191, 255, 0.2);
+    transition: transform 0.3s;
+}
+
+.gallery-image:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-neon);
+}
+        /* FOOTER */
+        .app-footer {
+            padding: 10px;
+            background-color: rgba(17, 17, 17, 0.95);
+            color: var(--color-sub-text);
+            text-align: center;
+            font-size: 0.8em;
+            width: 100%;
+            position: fixed; 
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+<body>
+    
+    <video muted playsinline id="background-video">
+        <source id="video-source" src="https://github.com/dannysantiag-droid/VIDEO-DE-ENTRADA/raw/refs/heads/main/video%20fondo%20APP.mp4" type="video/mp4">
+        Tu navegador no soporta el video de fondo.
+    </video>
+    
+    <div class="app-container">
+        
+        <main id="page-menu">
+            
+            <div class="menu-title-wrapper fade-in-initial-hidden" id="menu-title-wrapper">
+                <h1>CATÁLOGO VEHICULAR</h1>
+            </div>
+
+            <section class="category-menu-container buttons-stagger-hidden" id="menu-buttons-container">
+                <div class="features-menu" id="category-buttons">
+                    <button class="feature-button" data-category="Sedán">Sedán</button>
+                    
+                    <button class="feature-button" data-category="SUV">SUV</button>
+		            <button class="feature-button" data-category="Camionetas">Camionetas</button>
+                    
+                    <button class="feature-button" data-category="Híbridos">Híbridos</button>
+		            <button class="feature-button" data-category="Camiones">Camiones</button>
+			        
+
+
+                </div>            
+            </section>
+        </main>
+
+        <main id="page-catalog">
+            <h1 class="category-title" id="main-category-title"></h1>
+            <section id="catalogo-vehiculos">
+                </section>
+        </main>
+
+        <main id="page-details" style="display: none;">
+            <div class="detail-header">
+                <h2 id="detail-title"></h2>
+                <span class="detail-value" id="detail-value"></span>
+            </div>
+
+            <div class="image-gallery" id="gallery-container">
+                </div>
+            
+            </main>
+
+    </div>
+
+    <button class="fixed-back-button" id="fixed-btn-back" onclick="showPage('previous')" style="display: none;">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+
+    <footer class="app-footer">
+        <span>© 2024 PP AUTOS - El Auto de Tus Sueños</span>
+    </footer>
+
+    <script>
+        // --- 1. ESTRUCTURA DE DATOS DE LOS VEHÍCULOS (JSON) ---
+        
+        const placeholderImg = (text) => `https://via.placeholder.com/250x250/222233/00bfff?text=${text.replace(' ', '+')}`;
+        const placeholderGallery = (model) => {
+            const baseText = model.toUpperCase().replace(' ', '+');
+            return [
+                placeholderImg(`${baseText}+Frente`),
+                placeholderImg(`${baseText}+Interior`),
+                placeholderImg(`${baseText}+Lateral`),
+                placeholderImg(`${baseText}+Motor`),
+                placeholderImg(`${baseText}+Trasera`),
+                placeholderImg(`${baseText}+Detalle`)
+            ];
+        };
+
+        // Utilidad para obtener una URL de imagen para el catálogo 
+        const getCatalogImg = (vehiculo) => vehiculo.ImagenURL || (vehiculo.ImagenesGaleria && vehiculo.ImagenesGaleria[0]) || placeholderImg(vehiculo.Modelo);
+
+        /* CONFIGURACIÓN DE WHATSAPP */
+        const WHATSAPP_NUMBER = '593959792435'; 
+
+        // Función para generar el enlace de WhatsApp
+        function getWhatsappLink(marca, modelo) {
+            const text = encodeURIComponent(`Hola, estoy interesado/a en el vehículo ${marca} ${modelo} que vi en el catálogo de PP AUTOS. ¿Podrían darme más información?`);
+            // Usa 'wa.me' para una mejor compatibilidad móvil y web
+            return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+        }
+
+        // Función que inserta el SVG del motor (pequeño y animado)
+        function getMotorSVG() {
+            return `
+                <svg class="motor-icon" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="5" width="20" height="9" rx="1" stroke="currentColor" stroke-width="1"/>
+                    <path d="M4 14L4 15C4 15.5523 4.44772 16 5 16H19C19.5523 16 20 15.5523 20 15L20 14" stroke="currentColor" stroke-width="1"/>
+                    <rect x="3" y="3" width="18" height="2" rx="0.5" stroke="currentColor" stroke-width="1"/>
+                    
+                    <g class="movimiento-1">
+                        <path d="M6 3V1" stroke="currentColor" stroke-width="1"/>
+                    </g>
+                    
+                    <g class="movimiento-2">
+                        <path d="M10 3V1" stroke="currentColor" stroke-width="1"/>
+                    </g>
+                    
+                    <g class="movimiento-3">
+                        <path d="M14 3V1" stroke="currentColor" stroke-width="1"/>
+                    </g>
+                    
+                    <g class="movimiento-4">
+                        <path d="M18 3V1" stroke="currentColor" stroke-width="1"/>
+                    </g>
+
+                    <path d="M5 14V8M9 14V8M13 14V8M17 14V8" stroke="currentColor" stroke-width="0.5"/>
+                    
+                    <path d="M2 10H0.5" stroke="currentColor" stroke-width="1"/>
+                    <circle cx="0.5" cy="10" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/>
+
+                    <g class="eje-giratorio">
+                        <circle cx="22" cy="10" r="2" stroke="currentColor" stroke-width="1" fill="none"/>
+                        <path d="M20 10H24" stroke="currentColor" stroke-width="1"/>
+                        <path d="M22 8.5V11.5" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
+                    </g>
+                </svg>
+            `;
+        }
+        
+        // 📅 FUNCIÓN MODIFICADA: Retorna un SVG de ICONO DE AÑO (con 6 cuadros animados)
+        function getYearIconSVG() {
+            return `
+                <svg class="year-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="18" height="17" rx="2" ry="2"/>
+                    <path d="M3 9H21" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    
+                    <g id="moving-squares" transform="translate(0, 5)">
+                        <rect class="animated-square" x="5" y="6" width="4" height="4" rx="1"/>
+                        <rect class="animated-square" x="10" y="6" width="4" height="4" rx="1"/>
+                        <rect class="animated-square" x="15" y="6" width="4" height="4" rx="1"/>
+
+                        <rect class="animated-square" x="5" y="11" width="4" height="4" rx="1"/>
+                        <rect class="animated-square" x="10" y="11" width="4" height="4" rx="1"/>
+                        <rect class="animated-square" x="15" y="11" width="4" height="4" rx="1"/>
+                    </g>
+                </svg>
+            `;
+        }
+        
+        // ⚙️ FUNCIÓN DE TRANSMISIÓN (Caja de Cambios) - CON ANIMACIÓN DE ENGRANAJES
+        function getTransmissionIconSVG() {
+            return `
+                <svg class="transmission-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    
+                    <g class="gear-small">
+                        <circle cx="9.5" cy="9" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="9.5" y1="6.5" x2="9.5" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="7" y1="9" x2="5.5" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+
+                    <g class="gear-large">
+                        <circle cx="16.5" cy="16.5" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="16.5" y1="14" x2="16.5" y2="12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="19" y1="16.5" x2="20.5" y2="16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                    
+                    <circle cx="7.5" cy="16.5" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+
+                    <path d="M9.5 9L7.5 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.5 14L19 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7 16.5H16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            `;
+        }
+
+        // 🚀 SVG de Velocímetro Animado (Kilometraje)
+        function getSpeedometerSVG() {
+            return `
+                <svg class="speedometer-icon" viewBox="0 0 24 24">
+                    <path class="icon-element" d="M4 16A10 10 0 1 1 20 16" />
+                    <circle class="icon-element" cx="12" cy="16" r="1.5" />
+                    <line class="speedo-aguja icon-element" x1="12" y1="16" x2="12" y2="6" />
+                    <line class="icon-element" x1="4" y1="16.5" x2="5" y2="16.5" />
+                    <line class="icon-element" x1="19" y1="16.5" x2="20" y2="16.5" />
+                </svg>
+            `;
+        }
+        // FIN CAMBIO NUEVO
+
+        // Se ha agregado la propiedad 'ImagenesGaleria' a cada vehículo
+        const catalogo = {
+            "Sedán": [
+                { 
+                    id: 1, 
+                    Marca: "CITROEN", 
+                    Modelo: "C-ELYSEE", 
+                    Año: 2019, 
+                    Motor: "1.6", 
+                    Transmisión: "Manual", 
+                    Kilometraje: "130,000 km", 
+                    Valor: "$12,900", 
+                    ImagenURL: "https://i.ibb.co/b4kQNMY/6.jpg", 
+				    ImagenesGaleria: [
+			            "https://i.ibb.co/GQPQLvN8/3.jpg", 
+                        "https://i.ibb.co/C5QbkyrB/4.jpg",
+                        "https://i.ibb.co/ktyrWHv/7.jpg",
+                        "https://i.ibb.co/N6tgZWYf/1.jpg",
+                        "https://i.ibb.co/N2v2MrjQ/2.jpg",
+                        "https://i.ibb.co/vx7t30ZP/5.jpg"
+]
+},
+                
+            ],
+            "SUV": [
+                { id: 1, Marca: "JEEP", Modelo: "WRANGLER", Año: 2011, Motor: "3.8", Transmisión: "Automática", Kilometraje: "102,000 km", Valor: "$45,900", 
+ImagenURL: "https://i.ibb.co/1fFDFRFd/IMG-20251016-WA0095.jpg",
+ ImagenesGaleria: [ "https://i.ibb.co/qMVns2P9/IMG-20251016-WA0082.jpg", "https://i.ibb.co/b5qJ9GX7/IMG-20251016-WA0083.jpg", "https://i.ibb.co/QsRJ083/IMG-20251016-WA0088.jpg", "https://i.ibb.co/1fFDFRFd/IMG-20251016-WA0095.jpg", "https://i.ibb.co/99ywMSjW/IMG-20251016-WA0085.jpg", "https://i.ibb.co/G3P3K7YD/IMG-20251016-WA0089.jpg" ] },
+
+                { id: 2, Marca: "HYUNDAI",
+ Modelo: "SANTA FE",
+ Año: 2010, Motor: "2.4", 
+Transmisión: "Automático",
+ Kilometraje: "257,000 km", Valor: "$12,900", 
+ImagenURL: "https://i.ibb.co/rKRmH50w/1.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/9kTfv3LM/2.jpg", 
+                        "https://i.ibb.co/Z6nn74bC/3.jpg",
+                        "https://i.ibb.co/NdJkSvg7/4.jpg",
+                        "https://i.ibb.co/tM1q7s29/5.jpg",
+                        "https://i.ibb.co/MkFkqpnK/6.jpg",
+                        "https://i.ibb.co/ksFT2cCw/7.jpg"
+]
+ },
+
+
+                { id: 3, Marca: "TOYOTA", 
+Modelo: "RUSH",
+ Año: 2021, Motor: "1.5", 
+Transmisión: "Automática", Kilometraje: "71,000 km", Valor: "$19,990", 
+ImagenURL: "https://i.ibb.co/6JtnCkNV/1.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/SwJx2Zn2/2.jpg", 
+                        "https://i.ibb.co/35KJzcNR/3.jpg",
+                        "https://i.ibb.co/wFCQZXjT/4.jpg",
+                        "https://i.ibb.co/WNWbshr2/5.jpg",
+                        "https://i.ibb.co/YFbVSj3Z/6.jpg",
+                        "https://i.ibb.co/5hVMkDPh/7.jpg"
+]
+ },
+
+
+                { id: 4, Marca: "KIA",
+ Modelo: "SPORTAGE ACTIVE",
+ Año: 2017, Motor: "2.0", Transmisión: "manual", Kilometraje: "160,000 km", Valor: "$17,900",
+ImagenURL: "https://i.ibb.co/1kF3zyW/1.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/PB70dcv/2.jpg", 
+                        "https://i.ibb.co/fYzQHTvt/3.jpg",
+                        "https://i.ibb.co/vvk5bdJs/4.jpg",
+                        "https://i.ibb.co/0jkqg6P8/5.jpg",
+                        "https://i.ibb.co/3YynSCPJ/6.jpg",
+                        "https://i.ibb.co/tM0P0N8h/7.jpg"
+]
+ },
+
+
+                { id: 5, Marca: "CHANGAN",
+ Modelo: "CS35 PLUS",
+ Año: 2023,Motor: "1.6", Transmisión: "Manual", Kilometraje: "62,000 km", Valor: "$16,900", 
+ImagenURL: "https://i.ibb.co/RpJVrVPp/2.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/W4TSdvg7/1.jpg", 
+                        "https://i.ibb.co/GQ1FRd8y/3.jpg",
+                        "https://i.ibb.co/MDQTW4m2/4.jpg",
+                        "https://i.ibb.co/v4fkF7VD/5.jpg",
+                        "https://i.ibb.co/ycz6rzK7/6.jpg",
+                        "https://i.ibb.co/3yhVMjwD/7.jpg"
+]
+ },
+
+
+
+                { id: 6, Marca: "CHEVROLET",
+ Modelo: "GROOVE",
+ Año: 2023, Motor: "1.5", Transmisión: "Manual", Kilometraje: "89,000 km", Valor: "$16,900", 
+ImagenURL: "https://i.ibb.co/gMnFTgQX/1.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/RGyHRZSD/2.jpg", 
+                        "https://i.ibb.co/LzWZ9gq8/3.jpg",
+                        "https://i.ibb.co/JWXQgh5H/4.jpg",
+                        "https://i.ibb.co/1YY5bycd/5.jpg",
+                        "https://i.ibb.co/Xf7pd8bc/6.jpg",
+                        "https://i.ibb.co/cXgdv4xG/7.jpg"
+]
+ },
+
+                { id: 7, Marca: "NISSAN",
+ Modelo: "KICKS DRIVE",
+ Año: 2022, Motor: "1.6", Transmisión: "Manual", Kilometraje: "86,000 km", Valor: "$19,900",
+ImagenURL: "https://i.ibb.co/FLfns88m/1.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/hx7xDp1S/2.jpg", 
+                        "https://i.ibb.co/n8QkcdsG/3.jpg",
+                        "https://i.ibb.co/wF84Tq99/4.jpg",
+                        "https://i.ibb.co/FkvhD4mH/5.jpg",
+                        "https://i.ibb.co/DD5Xnqq6/6.jpg",
+                        "https://i.ibb.co/wZ0bVCbw/7.jpg"
+]
+ },
+                { id: 8, Marca: "MAZDA",
+ Modelo: "CX3 CORE",
+ Año: 2017, Motor: "2.0L", Transmisión: "Automática", Kilometraje: "90,000 Km",
+ Valor: "$18,900", 
+ImagenURL: "https://i.ibb.co/5gqLQVzt/1.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/ZzCNTSCt/2.jpg", 
+                        "https://i.ibb.co/QjrG38vg/3.jpg",
+                        "https://i.ibb.co/8gDG8zx7/4.jpg",
+                        "https://i.ibb.co/bRb0yyv3/5.jpg",
+                        "https://i.ibb.co/0Rm091NL/6.jpg",
+                        "https://i.ibb.co/WdczYYj/7.jpg"
+]
+ },
+
+                { id: 9, Marca: "KIA",
+ Modelo: "SPORTAGE R LX",
+ Año: 2014, Motor: "2.0L", Transmisión: "Automática",
+Kilometraje: "157,000 Km",
+ Valor: "$15,900", 
+ImagenURL: "https://i.ibb.co/jP3PHtdd/2.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/svjvBrXr/1.jpg", 
+                        "https://i.ibb.co/MkTrrqpZ/3.jpg",
+                        "https://i.ibb.co/391P476x/4.jpg",
+                        "https://i.ibb.co/SwRv541v/5.jpg",
+                        "https://i.ibb.co/Xfp48cD0/6.jpg",
+                        "https://i.ibb.co/KpRfqSjX/7.jpg"
+]
+ },
+
+               
+            ],
+            "Camionetas": [
+                { id: 1, Marca: "FORD", Modelo: "F150 RC", Año: 2011, Motor: "3.7", Transmisión: "Automática"
+, Kilometraje: "198,000 km", Valor: "$13,500", 
+ImagenURL: "https://i.ibb.co/n8CypjdH/1.jpg"
+, ImagenesGaleria: [
+			"https://i.ibb.co/dwx8M9n2/2.jpg", 
+                        "https://i.ibb.co/4ZsKPwbM/3.jpg",
+                        "https://i.ibb.co/pjJ8QJjk/4.jpg",
+                        "https://i.ibb.co/fzBHSZ0P/5.jpg",
+                        "https://i.ibb.co/mVB65PL9/6.jpg",
+                        "https://i.ibb.co/67CwXz02/7.jpg"
+]
+ },
+
+                { id: 2, Marca: "JAC", Modelo: "T6 LUXURY",
+ Año: 2019, Motor: "2.0", Transmisión: "Manual", Kilometraje: "159,000 km", Valor: "$15,900",
+ ImagenURL: "https://i.ibb.co/ch3KcP4n/1.jpg"
+, ImagenesGaleria: [
+			"https://i.ibb.co/k6sK8nhK/2.jpg", 
+                        "https://i.ibb.co/gbhxyY6g/6.jpg",
+                        "https://i.ibb.co/GfvYqjkd/3.jpg",
+                        "https://i.ibb.co/nMSPJWcs/7.jpg",
+                        "https://i.ibb.co/Hp2TsNf3/8.jpg",
+                        "https://i.ibb.co/xtX9ngTB/9.jpg"
+]
+ },
+
+               
+            ],
+            
+            "Híbridos": [
+                { id: 1, Marca: "PORSCHE"
+, Modelo: "CAYENNE S HYBRID",
+ Año: 2012, Motor: "3.0L Híbrido", Transmisión: "Automática",
+Kilometraje: "150,000 Km",
+ Valor: "$29,900",
+  ImagenURL: "https://i.ibb.co/xqCSkD82/1.jpg"
+, ImagenesGaleria: [
+			"https://i.ibb.co/N6MLRbsc/8.jpg", 
+                        "https://i.ibb.co/mCS28GyZ/2.jpg",
+                        "https://i.ibb.co/j9wmp6Ck/3.jpg",
+                        "https://i.ibb.co/8LNT7bYP/4.jpg",
+                        "https://i.ibb.co/j9pYrX9V/6.jpg",
+                        "https://i.ibb.co/sdrjDrpY/7.jpg"
+]
+ },
+
+                { id: 2, Marca: "KIA",
+ Modelo: "NIRO HYBRID",
+ Año: 2026, Motor: "1.6L Híbrido", 
+Transmisión: "Automática", Kilometraje: "0 km", Valor: "$29,900", 
+ImagenURL: "https://i.ibb.co/6RP8x3yL/1.jpg"
+, ImagenesGaleria: [
+			"https://i.ibb.co/4nxtXQsL/2.jpg", 
+                        "https://i.ibb.co/Xrgv3wHb/3.jpg",
+                        "https://i.ibb.co/7xXrWgTZ/4.jpg",
+                        "https://i.ibb.co/FbrXLTGs/5.jpg",
+                        "https://i.ibb.co/20h3NWT7/6.jpg",
+                        "https://i.ibb.co/Ps51h0vm/7.jpg"
+]
+ },
+		{ id: 2, Marca: "KIA",
+ Modelo: "NIRO HYBRID",
+ Año: 2019, Motor: "1.6L Híbrido", 
+Transmisión: "Automática", Kilometraje: "102,000 km",
+Valor: "$18,900", 
+ImagenURL: "https://i.ibb.co/7FcqfPZ/1.jpg"
+, ImagenesGaleria: [
+			"https://i.ibb.co/M3g1B93/2.jpg", 
+                        "https://i.ibb.co/zTNDQKWQ/3.jpg",
+                        "https://i.ibb.co/RGBc3dDg/4.jpg",
+                        "https://i.ibb.co/27ZrpRyv/5.jpg",
+                        "https://i.ibb.co/KcsMNC7V/6.jpg",
+                        "https://i.ibb.co/hRL171vr/7.jpg"
+]
+ },
+		{ id: 2, Marca: "TOYOTA",
+ Modelo: "PRIUS C SPORT",
+ Año: 2020, Motor: "1.5L Híbrido", 
+Transmisión: "Automática", Kilometraje: "97,000 km",
+Valor: "$17,900", 
+ImagenURL: "https://i.ibb.co/XZcdKqy1/1.jpg"
+, ImagenesGaleria: [
+			"https://i.ibb.co/zTW0hJhc/2.jpg", 
+                        "https://i.ibb.co/9HnvLYN6/3.jpg",
+                        "https://i.ibb.co/7dKpfgzc/4.jpg",
+                        "https://i.ibb.co/4ZcyyZYr/5.jpg",
+                        "https://i.ibb.co/7JzPjZsf/7.jpg",
+                        "https://i.ibb.co/Kc4PXj4b/6.jpg"
+]
+ },
+
+
+
+                { id: 3, Marca: "CHERY",
+Modelo: "TIGGO 4 PRO LUXURY",
+ Año: 2024, Motor: "1.5L Híbrido", Transmisión: "Automática", Kilometraje: "65,000 km", Valor: "$16,900", 
+ImagenURL: "https://i.ibb.co/wZjkBq0S/1.jpg"
+, ImagenesGaleria: [
+			"https://i.ibb.co/pjSqj4f5/2.jpg", 
+                        "https://i.ibb.co/8nSrDV38/3.jpg",
+                        "https://i.ibb.co/ZpXW73Lj/4.jpg",
+                        "https://i.ibb.co/Ld9nfmbP/5.jpg",
+                        "https://i.ibb.co/cXXSGhkn/6.jpg",
+                        "https://i.ibb.co/svpStJMC/7.jpg"
+]
+ },
+
+            ],
+            "Camiones": [
+                { id: 1, Marca: "HINO",
+ Modelo: "5 TONELADAS",
+ Año: 2006, Motor: "4.6L Diesel", Transmisión: "Manual", Kilometraje: "487,000 km", Valor: "$18,900",
+ ImagenURL: "https://i.ibb.co/CpZFsyL0/1.jpg"
+, ImagenesGaleria: [
+			"https://i.ibb.co/kgxP25rV/2.jpg", 
+                        "https://i.ibb.co/8DXskGN8/3.jpg",
+                        "https://i.ibb.co/GvVdztbP/4.jpg",
+                        "https://i.ibb.co/1Yn2Z7pv/5.jpg",
+                        "https://i.ibb.co/60g9V4Mn/6.jpg",
+                        "https://i.ibb.co/TMLKV0Pf/7.jpg"
+]
+ },
+
+             
+            ]
+        };
+
+
+        // --- 2. LÓGICA DE NAVEGACIÓN Y RENDERIZADO ---
+
+        const pageMenu = document.getElementById('page-menu');
+        const pageCatalog = document.getElementById('page-catalog');
+        const pageDetails = document.getElementById('page-details');
+        const mainCategoryTitle = document.getElementById('main-category-title');
+        const catalogoVehiculosDiv = document.getElementById('catalogo-vehiculos');
+        const fixedBtnBack = document.getElementById('fixed-btn-back');
+        const categoryButtonsContainer = document.getElementById('menu-buttons-container');
+        const menuTitleWrapper = document.getElementById('menu-title-wrapper');
+        const backgroundVideo = document.getElementById('background-video'); // <-- Variable del video
+        
+        let history = ['menu']; 
+        let currentCategory = null; 
+
+        /**
+         * Maneja el cambio de página y actualiza el historial de navegación.
+         * @param {string} page - La página a mostrar ('menu', 'catalog', 'details', 'previous').
+         * @param {string} category - Categoría del catálogo (solo si page='catalog' o 'details').
+         * @param {number} vehicleId - ID del vehículo (solo si page='details').
+         */
+        function showPage(page, category = null, vehicleId = null) {
+            // Ocultar todas las páginas
+            pageMenu.style.display = 'none';
+            pageCatalog.style.display = 'none';
+            pageDetails.style.display = 'none';
+            document.body.classList.remove('menu-active-video');
+            fixedBtnBack.style.display = 'none';
+            
+            // Pausar el video para ahorrar recursos si no está en el menú
+            if (backgroundVideo) {
+                backgroundVideo.pause();
+            }
+
+            let targetPage = page;
+
+            if (page === 'previous') {
+                // Eliminar la página actual del historial
+                history.pop();
+                if (history.length === 0) {
+                    // Si el historial está vacío, volver al menú por defecto
+                    history.push('menu');
+                }
+                
+                // La página anterior es la última en el historial
+                const previousEntry = history[history.length - 1];
+                
+                // Manejo de variables al regresar
+                if (previousEntry.startsWith('catalog:')) {
+                    category = previousEntry.split(':')[1];
+                    targetPage = 'catalog';
+                } else if (previousEntry.startsWith('details:')) {
+                    const parts = previousEntry.split(':')[1].split(':');
+                    category = parts[0];
+                    vehicleId = parseInt(parts[1]);
+                    targetPage = 'details';
+                } else {
+                    targetPage = 'menu';
+                }
+
+            } else {
+                // Si no es "previous", añadir al historial la nueva página/estado
+                let historyEntry;
+                if (page === 'catalog') {
+                    historyEntry = `catalog:${category}`;
+                } else if (page === 'details') {
+                    // CRÍTICO: Usamos la categoría recibida como parámetro, no la global, para ser más robustos.
+                    const usedCategory = category || currentCategory; 
+                    historyEntry = `details:${usedCategory}:${vehicleId}`; 
+                    category = usedCategory; // Aseguramos que la variable local 'category' tenga el valor correcto para el rendering.
+                } else {
+                    historyEntry = 'menu';
+                }
+
+                // Evitar duplicados si ya es la página actual
+                if (history[history.length - 1] !== historyEntry) {
+                    history.push(historyEntry);
+                }
+            }
+
+            // Eliminar entradas duplicadas si ocurre un error de navegación
+            if (history.length > 2 && history[history.length - 1] === history[history.length - 2]) {
+                history.pop();
+            }
+
+            // Mostrar la página objetivo
+            if (targetPage === 'menu') {
+                pageMenu.style.display = 'flex';
+                // Activamos el video de fondo solo en el menú
+                document.body.classList.add('menu-active-video');
+                // Al volver al menú, mostramos la animación inicial
+                animateMenu();
+            } else if (targetPage === 'catalog') {
+                pageCatalog.style.display = 'block';
+                renderCatalog(category);
+                fixedBtnBack.style.display = 'block';
+            } else if (targetPage === 'details') {
+                pageDetails.style.display = 'block';
+                renderDetails(category, vehicleId); // AHORA 'category' tiene el valor correcto.
+                fixedBtnBack.style.display = 'block';
+            }
+        }
+        
+        // --- FUNCIÓN renderCatalog (Permite la navegación a Detalles) ---
+        
+        /**
+         * Renderiza el catálogo de vehículos para una categoría específica.
+         */
+        function renderCatalog(category) {
+            currentCategory = category;
+            mainCategoryTitle.textContent = category;
+            
+            const vehicles = catalogo[category] || [];
+            catalogoVehiculosDiv.innerHTML = vehicles.map(vehiculo => {
+                const imageURL = getCatalogImg(vehiculo);
+                const whatsappLink = getWhatsappLink(vehiculo.Marca, vehiculo.Modelo);
+
+                return `
+                    <div class="car-card" onclick="showPage('details', '${category}', ${vehiculo.id})" data-vehicle-id="${vehiculo.id}">
+                        <div class="card-image-container">
+                            <img src="${imageURL}" alt="${vehiculo.Marca} ${vehiculo.Modelo}" class="card-image">
+                        </div>
+                        <div class="card-detail">
+                            <p>Marca: <strong>${vehiculo.Marca}</strong></p>
+                            <p>Modelo: <strong>${vehiculo.Modelo}</strong></p>
+                            
+                            <div class="motor-detail-container">
+                                ${getMotorSVG()}
+                                <p class="detail-text-line">Motor:&nbsp;<strong>${vehiculo.Motor}</strong></p>
+                            </div>
+                            
+                            <div class="year-detail-container">
+                                ${getYearIconSVG()}
+                                <p class="detail-text-line">Año:&nbsp;<strong>${vehiculo.Año}</strong></p>
+                            </div>
+                            
+                            <div class="transmission-detail-container">
+                                ${getTransmissionIconSVG()}
+                                <p class="detail-text-line">Transmisión:&nbsp;<strong>${vehiculo.Transmisión}</strong></p>
+                            </div>
+                            
+                            <div class="mileage-detail-container">
+                                ${getSpeedometerSVG()}
+                                <p class="detail-text-line">Kilometraje:&nbsp;<strong>${vehiculo.Kilometraje}</strong></p>
+                            </div>
+                        </div>
+                        <div class="card-value">
+                            ${vehiculo.Valor}
+                        </div>
+                        <a href="${whatsappLink}" class="modern-btn-whatsapp" onclick="event.stopPropagation();">
+                            <i class="fab fa-whatsapp whatsapp-icon"></i>
+                            Whatsapp
+                        </a>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // --- FIN DE FUNCIÓN renderCatalog ---
+
+        /**
+         * Renderiza la página de detalles para un vehículo específico.
+         */
+        function renderDetails(category, id) {
+            // CRÍTICO: 'category' ahora recibe el string correcto, permitiendo buscar el vehículo.
+            const vehicle = (catalogo[category] || []).find(v => v.id === id);
+            
+            if (!vehicle) {
+                alert('Vehículo no encontrado.');
+                showPage('menu');
+                return;
+            }
+
+            document.getElementById('detail-title').textContent = `${vehicle.Marca} ${vehicle.Modelo} (${vehicle.Año})`;
+            document.getElementById('detail-value').textContent = vehicle.Valor;
+
+            const galleryContainer = document.getElementById('gallery-container');
+            const images = vehicle.ImagenesGaleria || placeholderGallery(vehicle.Modelo);
+
+            galleryContainer.innerHTML = images.map(url => `
+                <img src="${url}" alt="Imagen de ${vehicle.Modelo}" class="gallery-image">
+            `).join('');
+            
+            // Opcional: Implementar la galería completa de detalles (especificaciones) aquí si es necesario
+        }
+
+
+        // --- 3. MANEJO DE EVENTOS Y FUNCIONES DE INICIO ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Asignar eventos a los botones de categoría
+            const categoryButtons = document.querySelectorAll('.feature-button');
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const category = e.target.getAttribute('data-category');
+                    if (category) {
+                        showPage('catalog', category);
+                    }
+                });
+            });
+
+            // 2. Inicializar la aplicación en la página de menú
+            showPage('menu');
+        });
+        
+        /**
+         * Aplica la animación de entrada al título y los botones del menú.
+         */
+        function animateMenu() {
+            // 1. Mostrar el video de fondo
+            document.body.classList.add('menu-active-video');
+            
+            // 💡 SOLUCIÓN DEL VIDEO 1: Reiniciar el video al inicio (currentTime = 0)
+            if (backgroundVideo) {
+                backgroundVideo.currentTime = 0; // REINICIA EL VIDEO CADA VEZ QUE SE ENTRA AL MENÚ
+            }
+
+            // 💡 SOLUCIÓN DEL VIDEO 2: Intentar reproducir explícitamente el video
+            if (backgroundVideo) {
+                // Usamos un pequeño delay para asegurarnos de que el elemento es visible
+                // y para darle tiempo al navegador de procesar el estado 'visible'.
+                setTimeout(() => {
+                    // El método play() retorna una promesa, por eso usamos .catch()
+                    backgroundVideo.play().catch(error => {
+                        // console.error("La reproducción automática del video falló:", error);
+                        // Este error es esperado si el navegador es extremadamente estricto,
+                        // pero con 'muted' y 'playsinline' debería funcionar en la mayoría.
+                    });
+                }, 100); 
+            }
+            
+            // 2. Animación del título (Fade-In suave 8s)
+            menuTitleWrapper.classList.remove('fade-in-initial-hidden');
+            menuTitleWrapper.classList.add('fade-in-visible');
+            
+            // 3. Animación de los botones (Staggered Fade-In Scale)
+            // Primero, aseguramos la clase inicial para que el CSS aplique el estilo de "oculto"
+            categoryButtonsContainer.classList.add('buttons-stagger-hidden');
+            
+            // Usamos un pequeño delay para que el navegador reconozca el estado inicial
+            setTimeout(() => {
+                categoryButtonsContainer.classList.remove('buttons-stagger-hidden');
+                categoryButtonsContainer.classList.add('buttons-stagger-active');
+            }, 10); // Un pequeño retraso para forzar el repintado
+            
+            // Limpiar la clase de animación después de que haya terminado (ej: 1s para el último botón + su duración)
+            setTimeout(() => {
+                 categoryButtonsContainer.classList.remove('buttons-stagger-active');
+            }, 1000); 
+        }
+
+        // --- NAVEGACIÓN POR GESTOS (SWIPE DERECHA PARA REGRESAR) ---
+        let touchStartX = 0;
+        let isSwiping = false; 
+        const SWIPE_THRESHOLD = 50; 
+        
+        // 1. Registrar el inicio del toque
+        document.addEventListener('touchstart', (e) => {
+            // Solo registrar el inicio si es un solo toque
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+                isSwiping = true;
+            }
+        }, { passive: true }); // Usar passive: true para no bloquear el scroll
+
+        // 2. Registrar el movimiento y verificar la dirección
+        document.addEventListener('touchmove', (e) => {
+            if (isSwiping && e.touches.length === 1) {
+                const currentX = e.touches[0].clientX;
+                
+                // Cálculo de la diferencia horizontal y vertical
+                const diffX = Math.abs(currentX - touchStartX);
+                const diffY = Math.abs(e.touches[0].clientY - e.changedTouches[0].clientY); 
+
+                // Si el movimiento vertical es mucho mayor que el horizontal, deshabilitar el swipe
+                if (diffY > diffX * 2 && diffY > 10) {
+                    isSwiping = false; 
+                }
+            }
+        }, { passive: false }); 
+
+
+        // 3. Registrar el final del toque y calcular el gesto
+        document.addEventListener('touchend', (e) => {
+            if (isSwiping) {
+                // e.changedTouches[0] es el dedo que se levantó
+                const touchEndX = e.changedTouches[0].clientX;
+                const swipeDistance = touchEndX - touchStartX;
+    
+                // Verificar si fue un deslizamiento hacia la derecha y si se cumplió el umbral
+                if (swipeDistance > SWIPE_THRESHOLD) {
+                    // Solo ejecutar si NO estamos en el menú principal
+                    const menuPage = document.getElementById('page-menu');
+                    if (menuPage.style.display === 'none') {
+                        // Llamar a la función de regreso
+                        showPage('previous');
+                    }
+                }
+            }
+            // Resetear para el siguiente toque
+            touchStartX = 0;
+            isSwiping = false;
+        });
+
+        // --- FIN DE NAVEGACIÓN POR GESTOS ---
+    </script>
+    </body>
+</html>
