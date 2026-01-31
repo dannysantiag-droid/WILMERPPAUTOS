@@ -676,10 +676,11 @@ grid-template-columns: 30px 1fr;
                     <button class="feature-button" data-category="Sedán">Sedán</button>
                     
                     <button class="feature-button" data-category="SUV">SUV</button>
-		            <button class="feature-button" data-category="Camionetas">Camionetas</button>
+		            
                     
                     <button class="feature-button" data-category="Híbridos">Híbridos</button>
-		           
+		    <button class="feature-button" data-category="Camiones">Camiones</button>
+		            
 			        
 
 
@@ -734,7 +735,7 @@ grid-template-columns: 30px 1fr;
         const getCatalogImg = (vehiculo) => vehiculo.ImagenURL || (vehiculo.ImagenesGaleria && vehiculo.ImagenesGaleria[0]) || placeholderImg(vehiculo.Modelo);
 
         /* CONFIGURACIÓN DE WHATSAPP */
-        const WHATSAPP_NUMBER = '593959792435'; 
+        const WHATSAPP_NUMBER = '593968139608'; 
 
         // Función para generar el enlace de WhatsApp
         function getWhatsappLink(marca, modelo) {
@@ -867,6 +868,8 @@ grid-template-columns: 30px 1fr;
 },
                 
             ],
+             
+            
             "SUV": [
                 { id: 1, Marca: "JEEP", Modelo: "WRANGLER", Año: 2011, Motor: "3.8", Transmisión: "Automática", Kilometraje: "102,000 km", Valor: "$45,900", 
 ImagenURL: "https://i.ibb.co/1fFDFRFd/IMG-20251016-WA0095.jpg",
@@ -904,38 +907,23 @@ ImagenesGaleria: [
 ]
  },
 
-				{ id: 4, Marca: "CHEVROLET", 
-Modelo: "BLAZER RS",
- Año: 2020, Motor: "3.6", 
-Transmisión: "Automática", Kilometraje: "101,000 km", Valor: "$41,990", 
-ImagenURL: "https://i.ibb.co/MkK0ZkQj/1.jpg",
+
+                { id: 4, Marca: "BMW",
+ Modelo: "X5",
+ Año: 2007, Motor: "3.0", Transmisión: "Automática", Kilometraje: "193,000 km", Valor: "$14,000",
+ImagenURL: "https://i.ibb.co/mVssFBcq/Whats-App-Image-2026-01-26-at-09-23-23.jpg",
 ImagenesGaleria: [
-			"https://i.ibb.co/RGFGszr6/2.jpg", 
-                        "https://i.ibb.co/tpyt4ntD/3.jpg",
-                        "https://i.ibb.co/1GTkbRMJ/4.jpg",
-                        "https://i.ibb.co/T9JKwX4/5.jpg",
-                        "https://i.ibb.co/WWSG39g6/6.jpg",
-                        "https://i.ibb.co/8LdrZhRr/7.jpg"
+			"https://i.ibb.co/20PRcFVj/Whats-App-Image-2026-01-26-at-09-23-22.jpg", 
+                        "https://i.ibb.co/YFfq9N5v/Whats-App-Image-2026-01-26-at-09-23-23-1.jpg",
+                        "https://i.ibb.co/KpYGCjDC/Whats-App-Image-2026-01-26-at-09-23-23-4.jpg",
+                        "https://i.ibb.co/3mZnVZ0N/Whats-App-Image-2026-01-26-at-09-23-24-4.jpg",
+                        "https://i.ibb.co/1tWRMGY6/Whats-App-Image-2026-01-26-at-09-23-24-6.jpg",
+                        "https://i.ibb.co/xKjY4fbg/Whats-App-Image-2026-01-26-at-09-23-23-6.jpg"
 ]
  },
 
 
-                { id: 5, Marca: "KIA",
- Modelo: "SPORTAGE ACTIVE",
- Año: 2017, Motor: "2.0", Transmisión: "manual", Kilometraje: "160,000 km", Valor: "$17,900",
-ImagenURL: "https://i.ibb.co/1kF3zyW/1.jpg",
-ImagenesGaleria: [
-			"https://i.ibb.co/PB70dcv/2.jpg", 
-                        "https://i.ibb.co/fYzQHTvt/3.jpg",
-                        "https://i.ibb.co/vvk5bdJs/4.jpg",
-                        "https://i.ibb.co/0jkqg6P8/5.jpg",
-                        "https://i.ibb.co/3YynSCPJ/6.jpg",
-                        "https://i.ibb.co/tM0P0N8h/7.jpg"
-]
- },
-
-
-                { id: 6, Marca: "CHANGAN",
+                { id: 5, Marca: "CHANGAN",
  Modelo: "CS35 PLUS",
  Año: 2023,Motor: "1.6", Transmisión: "Manual", Kilometraje: "62,000 km", Valor: "$16,900", 
 ImagenURL: "https://i.ibb.co/RpJVrVPp/2.jpg",
@@ -951,7 +939,7 @@ ImagenesGaleria: [
 
 
 
-                { id: 7, Marca: "CHEVROLET",
+                { id: 6, Marca: "CHEVROLET",
  Modelo: "GROOVE",
  Año: 2023, Motor: "1.5", Transmisión: "Manual", Kilometraje: "89,000 km", Valor: "$16,900", 
 ImagenURL: "https://i.ibb.co/gMnFTgQX/1.jpg",
@@ -965,62 +953,77 @@ ImagenesGaleria: [
 ]
  },
 
-                { id: 8, Marca: "NISSAN",
- Modelo: "KICKS DRIVE",
- Año: 2022, Motor: "1.6", Transmisión: "Manual", Kilometraje: "86,000 km", Valor: "$19,900",
-ImagenURL: "https://i.ibb.co/FLfns88m/1.jpg",
+ { id: 10, Marca: "HYUNDAI",
+ Modelo: "SANTA FE",
+ Año: 2019, Motor: "2.4", Transmisión: "Manual", Kilometraje: "105,000 km", Valor: "$25,900", 
+ImagenURL: "https://i.ibb.co/7xscWVP8/Whats-App-Image-2026-01-29-at-15-18-04.jpg",
 ImagenesGaleria: [
-			"https://i.ibb.co/hx7xDp1S/2.jpg", 
-                        "https://i.ibb.co/n8QkcdsG/3.jpg",
-                        "https://i.ibb.co/wF84Tq99/4.jpg",
-                        "https://i.ibb.co/FkvhD4mH/5.jpg",
-                        "https://i.ibb.co/DD5Xnqq6/6.jpg",
-                        "https://i.ibb.co/wZ0bVCbw/7.jpg"
+			"https://i.ibb.co/PZc2BWnn/Whats-App-Image-2026-01-29-at-15-18-04-2.jpg", 
+                        "https://i.ibb.co/zHNkqQyQ/Whats-App-Image-2026-01-29-at-15-18-05-2.jpg",
+                        "https://i.ibb.co/TBGVNgx2/Whats-App-Image-2026-01-29-at-15-18-04-5.jpg",
+                        "https://i.ibb.co/tPPW5b9s/Whats-App-Image-2026-01-29-at-15-18-04-4.jpg",
+                        "https://i.ibb.co/qYr3pg4m/Whats-App-Image-2026-01-29-at-15-18-03.jpg",
+                        "https://i.ibb.co/WWnBBcGf/Whats-App-Image-2026-01-29-at-15-18-05.jpg"
 ]
  },
 
-				{ id: 9, Marca: "SUZUKI",
- Modelo: "VITARA GLX",
- Año: 2022, Motor: "1.6L", Transmisión: "Manual", Kilometraje: "60,000 Km",
- Valor: "$19,900", 
-ImagenURL: "https://i.ibb.co/KcKTwRLQ/1.jpg",
+{ id: 11, Marca: "KIA",
+ Modelo: "CARENS LX",
+ Año: 2023, Motor: "1.5", Transmisión: "Manual", Kilometraje: "52,000 km", Valor: "$22,900", 
+ImagenURL: "https://i.ibb.co/rKqfdFw1/Whats-App-Image-2026-01-29-at-13-25-12.jpg",
 ImagenesGaleria: [
-			"https://i.ibb.co/21HzcWTY/2.jpg", 
-                        "https://i.ibb.co/pBPQB7G7/3.jpg",
-                        "https://i.ibb.co/GjJvN4t/4.jpg",
-                        "https://i.ibb.co/n8zrcx2V/5.jpg",
-                        "https://i.ibb.co/RT7LPsYY/6.jpg",
-                        "https://i.ibb.co/GftNzXSB/7.jpg"
-]
- },
-                { id: 10, Marca: "CHERY",
- Modelo: "TIGGO 2 PRO",
- Año: 2024, Motor: "1.5L", Transmisión: "Automática", Kilometraje: "55,000 Km",
- Valor: "$14,500", 
-ImagenURL: "https://i.ibb.co/JRGHhdVJ/6.jpg",
-ImagenesGaleria: [
-			"https://i.ibb.co/ZzCNTSCt/2.jpg", 
-                        "https://i.ibb.co/RkMJ2pBc/2.jpg",
-                        "https://i.ibb.co/pSBfHDf/5.jpg",
-                        "https://i.ibb.co/bMZ5T4Tc/4.jpg",
-                        "https://i.ibb.co/VcXsFY69/3.jpg",
-                        "https://i.ibb.co/C348cScV/1.jpg"
+			"https://i.ibb.co/WvBSGLZ9/Whats-App-Image-2026-01-29-at-13-25-13-1.jpg", 
+                        "https://i.ibb.co/Tq2t4HTW/Whats-App-Image-2026-01-29-at-13-25-13-2.jpg",
+                        "https://i.ibb.co/LXMqKwDM/Whats-App-Image-2026-01-29-at-13-25-13.jpg",
+                        "https://i.ibb.co/pvcnVG4y/Whats-App-Image-2026-01-29-at-13-25-14-1.jpg",
+                        "https://i.ibb.co/SqSR87c/Whats-App-Image-2026-01-29-at-13-25-13-5.jpg",
+                        "https://i.ibb.co/TMWy17t0/Whats-App-Image-2026-01-29-at-13-25-13-4.jpg"
 ]
  },
 
-                { id: 11, Marca: "KIA",
- Modelo: "SPORTAGE R LX",
- Año: 2014, Motor: "2.0L", Transmisión: "Automática",
-Kilometraje: "157,000 Km",
- Valor: "$15,900", 
-ImagenURL: "https://i.ibb.co/jP3PHtdd/2.jpg",
+ { id: 12, Marca: "NISSAN",
+ Modelo: "KICKS ADVANCE",
+ Año: 2023,Motor: "1.6", Transmisión: "Automática", Kilometraje: "110,000 km", Valor: "$17,900", 
+ImagenURL: "https://i.ibb.co/1tWD6QKY/1.jpg",
 ImagenesGaleria: [
-			"https://i.ibb.co/svjvBrXr/1.jpg", 
-                        "https://i.ibb.co/MkTrrqpZ/3.jpg",
-                        "https://i.ibb.co/391P476x/4.jpg",
-                        "https://i.ibb.co/SwRv541v/5.jpg",
-                        "https://i.ibb.co/Xfp48cD0/6.jpg",
-                        "https://i.ibb.co/KpRfqSjX/7.jpg"
+			"https://i.ibb.co/v4f8BGgb/2.jpg", 
+                        "https://i.ibb.co/wr6gWwrM/7.jpg",
+                        "https://i.ibb.co/Mk9zFSmq/6.jpg",
+                        "https://i.ibb.co/gLF6LP7y/4.jpg",
+                        "https://i.ibb.co/gMFvy7nw/9.jpg",
+                        "https://i.ibb.co/hxqQxy7j/10.jpg"
+]
+ },
+
+
+                { id: 7, Marca: "VOLKSWAGEN",
+ Modelo: "TIGUAN TRENDLINE",
+ Año: 2018, Motor: "2.0", Transmisión: "Automática", Kilometraje: "119,000 km", Valor: "$21,900",
+ImagenURL: "https://i.ibb.co/vvR601sB/1.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/nf2gQ2G/2.jpg", 
+                        "https://i.ibb.co/5gjvtf2q/3.jpg",
+                        "https://i.ibb.co/VpSTBbDP/4.jpg",
+                        "https://i.ibb.co/0Ryjv4WQ/5.jpg",
+                        "https://i.ibb.co/LhxFW3M8/7.jpg",
+                        "https://i.ibb.co/v4BJg14Y/8.jpg"
+]
+ },
+               
+
+                { id: 9, Marca: "KIA",
+ Modelo: "SPORTAGE R LS",
+ Año: 2017, Motor: "2.0L", Transmisión: "Automática",
+Kilometraje: "145,000 Km",
+ Valor: "$18,000", 
+ImagenURL: "https://i.ibb.co/0pNVvPMD/2.jpg",
+ImagenesGaleria: [
+			"https://i.ibb.co/CK5J5xBx/1.jpg", 
+                        "https://i.ibb.co/rKP6pY4M/12.jpg",
+                        "https://i.ibb.co/PzfQG5k4/10.jpg",
+                        "https://i.ibb.co/hJfpwBH8/4.jpg",
+                        "https://i.ibb.co/rG31TCBj/7.jpg",
+                        "https://i.ibb.co/DPq85g30/11.jpg"
 ]
  },
 
@@ -1056,37 +1059,7 @@ ImagenURL: "https://i.ibb.co/n8CypjdH/1.jpg"
                
             ],
             
-            "Híbridos": [
-                { id: 1, Marca: "PORSCHE"
-, Modelo: "CAYENNE S HYBRID",
- Año: 2012, Motor: "3.0L Híbrido", Transmisión: "Automática",
-Kilometraje: "150,000 Km",
- Valor: "$29,900",
-  ImagenURL: "https://i.ibb.co/xqCSkD82/1.jpg"
-, ImagenesGaleria: [
-			"https://i.ibb.co/N6MLRbsc/8.jpg", 
-                        "https://i.ibb.co/mCS28GyZ/2.jpg",
-                        "https://i.ibb.co/j9wmp6Ck/3.jpg",
-                        "https://i.ibb.co/8LNT7bYP/4.jpg",
-                        "https://i.ibb.co/j9pYrX9V/6.jpg",
-                        "https://i.ibb.co/sdrjDrpY/7.jpg"
-]
- },
-
-                { id: 2, Marca: "KIA",
- Modelo: "NIRO HYBRID",
- Año: 2026, Motor: "1.6L Híbrido", 
-Transmisión: "Automática", Kilometraje: "0 km", Valor: "$29,900", 
-ImagenURL: "https://i.ibb.co/6RP8x3yL/1.jpg"
-, ImagenesGaleria: [
-			"https://i.ibb.co/4nxtXQsL/2.jpg", 
-                        "https://i.ibb.co/Xrgv3wHb/3.jpg",
-                        "https://i.ibb.co/7xXrWgTZ/4.jpg",
-                        "https://i.ibb.co/FbrXLTGs/5.jpg",
-                        "https://i.ibb.co/20h3NWT7/6.jpg",
-                        "https://i.ibb.co/Ps51h0vm/7.jpg"
-]
- },
+            "Híbridos": [                
 		{ id: 2, Marca: "KIA",
  Modelo: "NIRO HYBRID",
  Año: 2019, Motor: "1.6L Híbrido", 
@@ -1132,26 +1105,35 @@ ImagenURL: "https://i.ibb.co/wZjkBq0S/1.jpg"
                         "https://i.ibb.co/cXXSGhkn/6.jpg",
                         "https://i.ibb.co/svpStJMC/7.jpg"
 ]
- },
+ }
+],
 
-            ],
-            "Camiones": [
-                { id: 1, Marca: "HINO",
- Modelo: "5 TONELADAS",
- Año: 2006, Motor: "4.6L Diesel", Transmisión: "Manual", Kilometraje: "487,000 km", Valor: "$18,900",
- ImagenURL: "https://i.ibb.co/CpZFsyL0/1.jpg"
-, ImagenesGaleria: [
-			"https://i.ibb.co/kgxP25rV/2.jpg", 
-                        "https://i.ibb.co/8DXskGN8/3.jpg",
-                        "https://i.ibb.co/GvVdztbP/4.jpg",
-                        "https://i.ibb.co/1Yn2Z7pv/5.jpg",
-                        "https://i.ibb.co/60g9V4Mn/6.jpg",
-                        "https://i.ibb.co/TMLKV0Pf/7.jpg"
+		"Camiones": [
+    { 
+        id: 1, 
+        Marca: "JMC", 
+        Modelo: "CARRYING", 
+        Año: 2026, 
+        Motor: "2.8",
+	Carga: "2.8 Toneladas", 
+        Transmisión: "Manual", 
+        Kilometraje: "0,0 km", 
+        Valor: "$16,990", 
+        ImagenURL: "https://i.ibb.co/v57jGSL/Whats-App-Image-2026-01-26-at-17-42-09.jpg", 
+        ImagenesGaleria: [
+			"https://i.ibb.co/kgVgzjH9/Whats-App-Image-2026-01-26-at-17-42-09-3.jpg", 
+                        "https://i.ibb.co/p68PfqcM/Whats-App-Image-2026-01-26-at-17-42-09-1.jpg",
+                        "https://i.ibb.co/d4qJ642B/Whats-App-Image-2026-01-26-at-17-42-10-5.jpg",
+                        "https://i.ibb.co/fzQftrdD/Whats-App-Image-2026-01-26-at-17-42-10-3.jpg",
+                        "https://i.ibb.co/p6pbmH7R/Whats-App-Image-2026-01-26-at-17-42-09-2.jpg",
+                        "https://i.ibb.co/prJFzYc2/Whats-App-Image-2026-01-26-at-17-42-10.jpg"
 ]
- },
 
-             
-            ]
+    },
+    
+]
+          
+            
         };
 
 
@@ -1281,11 +1263,25 @@ ImagenURL: "https://i.ibb.co/wZjkBq0S/1.jpg"
                             <p>Marca: <strong>${vehiculo.Marca}</strong></p>
                             <p>Modelo: <strong>${vehiculo.Modelo}</strong></p>
                             
-                            <div class="motor-detail-container">
-                                ${getMotorSVG()}
-                                <p class="detail-text-line">Motor:&nbsp;<strong>${vehiculo.Motor}</strong></p>
-                            </div>
-                            
+                          
+
+<div class="motor-detail-container">
+    ${getMotorSVG()}
+    <p class="detail-text-line">
+        Motor:&nbsp;<strong>${vehiculo.Motor}</strong>
+    </p>
+</div>
+
+${category === "Camiones" ? `
+<div class="motor-detail-container" style="margin-top: 5px;">
+    <svg style="width:16px; height:16px; fill:var(--color-neon-blue); margin-right:8px;" viewBox="0 0 24 24">
+        <path d="M3,18V6H21V18H3M3,4A2,2 0 0 0 1,6V18A2,2 0 0 0 3,20H21A2,2 0 0 0 23,18V6A2,2 0 0 0 21,4H3M11,14H13V16H11V14M11,10H13V12H11V10M11,6H13V8H11V6Z" />
+    </svg>
+    <p class="detail-text-line">
+        Carga:&nbsp;<strong>${vehiculo.Carga || 'N/A'}</strong>
+    </p>
+</div>
+` : ''}                            
                             <div class="year-detail-container">
                                 ${getYearIconSVG()}
                                 <p class="detail-text-line">Año:&nbsp;<strong>${vehiculo.Año}</strong></p>
@@ -1462,6 +1458,4 @@ ImagenURL: "https://i.ibb.co/wZjkBq0S/1.jpg"
         // --- FIN DE NAVEGACIÓN POR GESTOS ---
     </script>
     </body>
-
 </html>
-
