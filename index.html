@@ -875,21 +875,7 @@ grid-template-columns: 30px 1fr;
 ImagenURL: "https://i.ibb.co/1fFDFRFd/IMG-20251016-WA0095.jpg",
  ImagenesGaleria: [ "https://i.ibb.co/qMVns2P9/IMG-20251016-WA0082.jpg", "https://i.ibb.co/b5qJ9GX7/IMG-20251016-WA0083.jpg", "https://i.ibb.co/QsRJ083/IMG-20251016-WA0088.jpg", "https://i.ibb.co/1fFDFRFd/IMG-20251016-WA0095.jpg", "https://i.ibb.co/99ywMSjW/IMG-20251016-WA0085.jpg", "https://i.ibb.co/G3P3K7YD/IMG-20251016-WA0089.jpg" ] },
 
-                { id: 2, Marca: "HYUNDAI",
- Modelo: "SANTA FE",
- Año: 2010, Motor: "2.4", 
-Transmisión: "Automático",
- Kilometraje: "257,000 km", Valor: "$12,900", 
-ImagenURL: "https://i.ibb.co/rKRmH50w/1.jpg",
-ImagenesGaleria: [
-			"https://i.ibb.co/9kTfv3LM/2.jpg", 
-                        "https://i.ibb.co/Z6nn74bC/3.jpg",
-                        "https://i.ibb.co/NdJkSvg7/4.jpg",
-                        "https://i.ibb.co/tM1q7s29/5.jpg",
-                        "https://i.ibb.co/MkFkqpnK/6.jpg",
-                        "https://i.ibb.co/ksFT2cCw/7.jpg"
-]
- },
+                
 
 
                 { id: 3, Marca: "TOYOTA", 
@@ -1402,59 +1388,7 @@ ${category === "Camiones" ? `
             }, 1000); 
         }
 
-        // --- NAVEGACIÓN POR GESTOS (SWIPE DERECHA PARA REGRESAR) ---
-        let touchStartX = 0;
-        let isSwiping = false; 
-        const SWIPE_THRESHOLD = 50; 
-        
-        // 1. Registrar el inicio del toque
-        document.addEventListener('touchstart', (e) => {
-            // Solo registrar el inicio si es un solo toque
-            if (e.touches.length === 1) {
-                touchStartX = e.touches[0].clientX;
-                isSwiping = true;
-            }
-        }, { passive: true }); // Usar passive: true para no bloquear el scroll
-
-        // 2. Registrar el movimiento y verificar la dirección
-        document.addEventListener('touchmove', (e) => {
-            if (isSwiping && e.touches.length === 1) {
-                const currentX = e.touches[0].clientX;
-                
-                // Cálculo de la diferencia horizontal y vertical
-                const diffX = Math.abs(currentX - touchStartX);
-                const diffY = Math.abs(e.touches[0].clientY - e.changedTouches[0].clientY); 
-
-                // Si el movimiento vertical es mucho mayor que el horizontal, deshabilitar el swipe
-                if (diffY > diffX * 2 && diffY > 10) {
-                    isSwiping = false; 
-                }
-            }
-        }, { passive: false }); 
-
-
-        // 3. Registrar el final del toque y calcular el gesto
-        document.addEventListener('touchend', (e) => {
-            if (isSwiping) {
-                // e.changedTouches[0] es el dedo que se levantó
-                const touchEndX = e.changedTouches[0].clientX;
-                const swipeDistance = touchEndX - touchStartX;
-    
-                // Verificar si fue un deslizamiento hacia la derecha y si se cumplió el umbral
-                if (swipeDistance > SWIPE_THRESHOLD) {
-                    // Solo ejecutar si NO estamos en el menú principal
-                    const menuPage = document.getElementById('page-menu');
-                    if (menuPage.style.display === 'none') {
-                        // Llamar a la función de regreso
-                        showPage('previous');
-                    }
-                }
-            }
-            // Resetear para el siguiente toque
-            touchStartX = 0;
-            isSwiping = false;
-        });
-
+       
         // --- FIN DE NAVEGACIÓN POR GESTOS ---
     </script>
     </body>
